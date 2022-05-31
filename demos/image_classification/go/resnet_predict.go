@@ -43,9 +43,9 @@ func run_binary_input(servingAddress string, imgPath string) {
 	}
 
 	// Target model specification
-	const MODEL_NAME string = "resnet"
-	const INPUT_NAME string = "map/TensorArrayStack/TensorArrayGatherV3"
-	const OUTPUT_NAME string = "softmax_tensor"
+	const MODEL_NAME string = "face_blur_pipeline"//"resnet"
+	const INPUT_NAME string = "image"//"map/TensorArrayStack/TensorArrayGatherV3"
+	const OUTPUT_NAME string = "image"//"softmax_tensor"
 
 	// Create Predict Request to OVMS
 	predictRequest := &pb.PredictRequest{
@@ -74,7 +74,8 @@ func run_binary_input(servingAddress string, imgPath string) {
 	}
 
 	// Setup connection with the model server via gRPC
-	conn, err := grpc.Dial(servingAddress, grpc.WithInsecure())
+	maxMsgSize := 1024 * 1024 * 1024
+	conn, err := grpc.Dial(servingAddress, grpc.WithInsecure(), grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(maxMsgSize), grpc.MaxCallSendMsgSize(maxMsgSize)))
 	if err != nil {
 		log.Fatalf("Cannot connect to the grpc server: %v\n", err)
 	}
@@ -98,27 +99,12 @@ func run_binary_input(servingAddress string, imgPath string) {
 	// Get details about output shape
 	outputShape := responseProto.GetTensorShape()
 	dim := outputShape.GetDim()
-	classesNum := dim[1].GetSize()
+	height := dim[1].GetSize()
+	width := dim[2].GetSize()
 
-	// Convert bytes to matrix
-	outMat, err := gocv.NewMatFromBytes(1, int(classesNum), gocv.MatTypeCV32FC1, responseContent)
-	outMat = outMat.Reshape(1, 1)
-
-	// Find maximum value along with its index in the output
-	_, maxVal, _, maxLoc := gocv.MinMaxLoc(outMat)
-
-	// Get label of the class with the highest confidence
-	var label string
-	if classesNum == 1000 {
-		label = labels[maxLoc.X]
-	} else if classesNum == 1001 {
-		label = labels[maxLoc.X-1]
-	} else {
-		fmt.Printf("Unexpected class number in the output")
-		return
-	}
-
-	fmt.Printf("Predicted class: %s\nClassification confidence: %f%%\n", label, maxVal*100)
+	outMat, err := gocv.NewMatFromBytes(int(height), int(width), gocv.MatTypeCV32FC3, responseContent)
+	gocv.IMWrite("/workspace/go/test.jpeg", outMat)
+	fmt.Println("Done")
 }
 
 func run_with_conversion(servingAddress string, imgPath string) {
