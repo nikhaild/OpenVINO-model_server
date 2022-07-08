@@ -26,6 +26,7 @@
 #include "profiler.hpp"
 #include "status.hpp"
 #include "tensorinfo.hpp"
+#include "tensormap.hpp"
 
 const uint64_t DEMULTIPLY_LIMIT = 10'000;
 

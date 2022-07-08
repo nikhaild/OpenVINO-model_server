@@ -26,9 +26,11 @@
 #include "logging.hpp"
 #include "modelmanager.hpp"
 #include "node_library_utils.hpp"
+#include "ov_utils.hpp"
 #include "pipeline.hpp"
 #include "pipelinedefinitionunloadguard.hpp"
 #include "prediction_service_utils.hpp"
+#include "status.hpp"
 
 namespace ovms {
 

@@ -24,6 +24,7 @@
 #include "tensorflow_serving/util/json_tensor.h"
 #pragma GCC diagnostic pop
 
+#include "status.hpp"
 #include "tfs_frontend/tfs_utils.hpp"
 #include "timer.hpp"
 
@@ -35,7 +36,7 @@ using tensorflow::serving::PredictResponse;
 
 namespace ovms {
 
-Status checkValField(const size_t& fieldSize, const size_t& expectedElementsNumber) {
+static Status checkValField(const size_t& fieldSize, const size_t& expectedElementsNumber) {
     if (fieldSize == 0)
         return StatusCode::REST_SERIALIZE_NO_DATA;
     if (fieldSize != expectedElementsNumber)

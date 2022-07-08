@@ -26,10 +26,10 @@
 #include "tensorflow_serving/apis/prediction_service.grpc.pb.h"
 #pragma GCC diagnostic pop
 
-#include "status.hpp"
 #include "tensorinfo.hpp"
 
 namespace ovms {
+class Status;
 
 /**
  * @brief Request order types

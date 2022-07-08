@@ -17,6 +17,7 @@
 #include <gtest/gtest.h>
 
 #include "../rest_utils.hpp"
+#include "../status.hpp"
 
 using namespace ovms;
 

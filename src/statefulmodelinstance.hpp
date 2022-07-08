@@ -20,12 +20,11 @@
 #include <string>
 
 #include "global_sequences_viewer.hpp"
-#include "modelconfig.hpp"
 #include "modelinstance.hpp"
 #include "sequence_manager.hpp"
 
 namespace ovms {
-
+class ModelConfig;
 class StatefulModelInstance : public ModelInstance {
     static const std::set<std::string> SPECIAL_INPUT_NAMES;
 

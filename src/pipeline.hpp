@@ -22,15 +22,15 @@
 #include <vector>
 
 #include "aliases.hpp"
-#include "status.hpp"
 
 namespace ovms {
 
-class Node;
 template <typename PredictRequest>
 class EntryNode;
 template <typename PredictResponse>
 class ExitNode;
+class Node;
+class Status;
 
 void printNodeConnections(const std::string& nodeName, const std::string& sourceNode, const Aliases& pairs);
 

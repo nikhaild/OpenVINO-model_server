@@ -27,9 +27,10 @@
 
 #include "modelmanager.hpp"
 #include "rest_parser.hpp"
-#include "status.hpp"
 
 namespace ovms {
+
+class Status;
 enum RequestType { Predict,
     GetModelStatus,
     GetModelMetadata,

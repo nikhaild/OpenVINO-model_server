@@ -25,6 +25,7 @@
 #include "node.hpp"
 #include "pipelineeventqueue.hpp"
 #include "profiler.hpp"
+#include "status.hpp"
 
 namespace ovms {
 

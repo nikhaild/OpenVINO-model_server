@@ -23,9 +23,9 @@
 #pragma GCC diagnostic pop
 
 #include "rest_parser.hpp"
-#include "status.hpp"
 
 namespace ovms {
+class Status;
 Status makeJsonFromPredictResponse(
     tensorflow::serving::PredictResponse& response_proto,
     std::string* response_json,

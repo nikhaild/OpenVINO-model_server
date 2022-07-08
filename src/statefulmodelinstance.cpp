@@ -21,6 +21,7 @@
 #include "deserialization.hpp"
 #include "executingstreamidguard.hpp"
 #include "logging.hpp"
+#include "modelconfig.hpp"
 #include "predict_request_validation_utils.hpp"
 #include "profiler.hpp"
 #include "serialization.hpp"

@@ -19,6 +19,7 @@
 #include "pipeline.hpp"
 #include "pipelinedefinition.hpp"
 #include "prediction_service_utils.hpp"
+#include "status.hpp"
 
 namespace ovms {
 

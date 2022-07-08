@@ -16,6 +16,7 @@
 #include "nodeinputhandler.hpp"
 
 #include "logging.hpp"
+#include "status.hpp"
 
 namespace ovms {
 

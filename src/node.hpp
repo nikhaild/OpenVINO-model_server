@@ -30,13 +30,16 @@
 #include "pipelineeventqueue.hpp"
 #include "precision.hpp"
 #include "shape.hpp"
-#include "status.hpp"
 #include "tensormap.hpp"
 
 namespace ovms {
 
 using TensorNames = std::vector<std::string>;
 using session_key_t = std::string;
+
+class NodeSession;
+class NodeSessionMetadata;
+class Status;
 
 class Node {
 protected:
