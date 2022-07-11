@@ -1,5 +1,5 @@
 //*****************************************************************************
-// Copyright 2021 Intel Corporation
+// Copyright 2022 Intel Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,30 +13,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //*****************************************************************************
-#pragma once
+#include "executingstreamidguard.hpp"
 
-#include <set>
-#include <string>
-
-#include <google/protobuf/map.h>
-
-#include "modelversion.hpp"
-#include "shape.hpp"
-#include "tensorinfo.hpp"
+#include "ovinferrequestsqueue.hpp"
 
 namespace ovms {
-class Status;
-namespace request_validation_utils {
+ExecutingStreamIdGuard::ExecutingStreamIdGuard(ovms::OVInferRequestsQueue& inferRequestsQueue) :
+    inferRequestsQueue_(inferRequestsQueue),
+    id_(inferRequestsQueue_.getIdleStream().get()),
+    inferRequest(inferRequestsQueue.getInferRequest(id_)) {}
 
-template <typename RequestType>
-Status validate(
-    const RequestType& request,
-    const tensor_map_t& inputsInfo,
-    const std::string& servableName,
-    const model_version_t servableVersion,
-    const std::set<std::string>& optionalAllowedInputNames = {},
-    const Mode batchingMode = Mode::FIXED,
-    const shapes_info_map_t& shapeInfo = shapes_info_map_t());
-
-}  // namespace request_validation_utils
-}  // namespace ovms
+ExecutingStreamIdGuard::~ExecutingStreamIdGuard() {
+    inferRequestsQueue_.returnStream(id_);
+}
+int ExecutingStreamIdGuard::getId() { return id_; }
+ov::InferRequest& ExecutingStreamIdGuard::getInferRequest() { return inferRequest; }
+}  //  namespace ovms

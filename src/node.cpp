@@ -31,6 +31,7 @@
 const uint64_t DEMULTIPLY_LIMIT = 10'000;
 
 namespace ovms {
+Node::~Node() = default;
 
 static std::string demultiplyCountSettingToString(std::optional<int32_t> demultiplyCount) {
     if (!demultiplyCount) {

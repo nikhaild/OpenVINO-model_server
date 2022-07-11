@@ -36,7 +36,6 @@
 #include "modelversion.hpp"
 #include "nodeinfo.hpp"
 #include "pipelinedefinitionstatus.hpp"
-#include "pipelinedefinitionunloadguard.hpp"
 #include "tensorinfo.hpp"
 
 namespace ovms {
@@ -44,6 +43,7 @@ namespace ovms {
 class ModelManager;
 class NodeValidator;
 class Pipeline;
+class PipelineDefinitionUnloadGuard;
 class Status;
 
 class PipelineDefinition {

@@ -15,20 +15,18 @@
 //*****************************************************************************
 #pragma once
 
-#include "ovinferrequestsqueue.hpp"
+namespace ov {
+class InferRequest;
+}
 
 namespace ovms {
+class OVInferRequestsQueue;
 
 struct ExecutingStreamIdGuard {
-    ExecutingStreamIdGuard(ovms::OVInferRequestsQueue& inferRequestsQueue) :
-        inferRequestsQueue_(inferRequestsQueue),
-        id_(inferRequestsQueue_.getIdleStream().get()),
-        inferRequest(inferRequestsQueue.getInferRequest(id_)) {}
-    ~ExecutingStreamIdGuard() {
-        inferRequestsQueue_.returnStream(id_);
-    }
-    int getId() { return id_; }
-    ov::InferRequest& getInferRequest() { return inferRequest; }
+    ExecutingStreamIdGuard(ovms::OVInferRequestsQueue& inferRequestsQueue);
+    ~ExecutingStreamIdGuard();
+    int getId();
+    ov::InferRequest& getInferRequest();
 
 private:
     ovms::OVInferRequestsQueue& inferRequestsQueue_;

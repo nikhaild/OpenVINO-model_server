@@ -28,6 +28,7 @@
 #include "../logging.hpp"
 #include "../modelconfig.hpp"
 #include "../modelinstance.hpp"
+#include "../nodestreamidguard.hpp"
 #include "../pipeline.hpp"
 #include "../pipeline_factory.hpp"
 #include "../pipelinedefinition.hpp"

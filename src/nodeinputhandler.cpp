@@ -17,6 +17,7 @@
 
 #include "logging.hpp"
 #include "status.hpp"
+#include "tensor_utils.hpp"
 
 namespace ovms {
 

@@ -28,10 +28,12 @@
 #include "tensorflow_serving/apis/model_service.pb.h"
 #pragma GCC diagnostic pop
 
-#include "modelmanager.hpp"
-#include "status.hpp"
+#include "modelversion.hpp"
 
 namespace ovms {
+class ModelManager;
+class ModelVersionStatus;
+class Status;
 
 void addStatusToResponse(tensorflow::serving::GetModelStatusResponse* response, model_version_t version, const ModelVersionStatus& model_version_status);
 

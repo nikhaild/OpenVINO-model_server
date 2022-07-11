@@ -22,6 +22,7 @@
 #include "../logging.hpp"
 #include "../node.hpp"
 #include "../nodeinputhandler.hpp"
+#include "../nodestreamidguard.hpp"
 #include "../ov_utils.hpp"
 #include "test_utils.hpp"
 

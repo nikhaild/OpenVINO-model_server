@@ -15,28 +15,26 @@
 //*****************************************************************************
 #pragma once
 
-#include <set>
-#include <string>
+#include <iostream>
+#include <memory>
 
-#include <google/protobuf/map.h>
-
-#include "modelversion.hpp"
-#include "shape.hpp"
-#include "tensorinfo.hpp"
+#include "node_library.hpp"
 
 namespace ovms {
-class Status;
-namespace request_validation_utils {
 
-template <typename RequestType>
-Status validate(
-    const RequestType& request,
-    const tensor_map_t& inputsInfo,
-    const std::string& servableName,
-    const model_version_t servableVersion,
-    const std::set<std::string>& optionalAllowedInputNames = {},
-    const Mode batchingMode = Mode::FIXED,
-    const shapes_info_map_t& shapeInfo = shapes_info_map_t());
+struct CNLIMWrapper {
+    void* ptr;
+    deinitialize_fn deinitialize = nullptr;
 
-}  // namespace request_validation_utils
+    CNLIMWrapper(void* CNLIM, deinitialize_fn deinitialize) :
+        ptr(CNLIM),
+        deinitialize(deinitialize) {}
+
+    ~CNLIMWrapper() {
+        deinitialize(ptr);
+    }
+};
+
+void* getCNLIMWrapperPtr(const std::shared_ptr<CNLIMWrapper>& wrapper);
+
 }  // namespace ovms

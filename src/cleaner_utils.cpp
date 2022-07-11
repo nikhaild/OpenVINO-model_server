@@ -1,5 +1,5 @@
 //*****************************************************************************
-// Copyright 2021 Intel Corporation
+// Copyright 2022 Intel Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,30 +13,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //*****************************************************************************
-#pragma once
 
-#include <set>
-#include <string>
+#include "cleaner_utils.hpp"
 
-#include <google/protobuf/map.h>
-
-#include "modelversion.hpp"
-#include "shape.hpp"
-#include "tensorinfo.hpp"
+#include "global_sequences_viewer.hpp"
+#include "modelmanager.hpp"
 
 namespace ovms {
-class Status;
-namespace request_validation_utils {
+FunctorSequenceCleaner::FunctorSequenceCleaner(GlobalSequencesViewer& globalSequencesViewer) :
+    globalSequencesViewer(globalSequencesViewer) {}
 
-template <typename RequestType>
-Status validate(
-    const RequestType& request,
-    const tensor_map_t& inputsInfo,
-    const std::string& servableName,
-    const model_version_t servableVersion,
-    const std::set<std::string>& optionalAllowedInputNames = {},
-    const Mode batchingMode = Mode::FIXED,
-    const shapes_info_map_t& shapeInfo = shapes_info_map_t());
+void FunctorSequenceCleaner::cleanup() {
+    globalSequencesViewer.removeIdleSequences();
+}
 
-}  // namespace request_validation_utils
+FunctorResourcesCleaner::FunctorResourcesCleaner(ModelManager& modelManager) :
+    modelManager(modelManager) {}
+
+void FunctorResourcesCleaner::cleanup() {
+    modelManager.cleanupResources();
+}
 }  // namespace ovms

@@ -25,7 +25,6 @@
 #include <openvino/openvino.hpp>
 
 #include "aliases.hpp"
-#include "nodesession.hpp"
 #include "nodesessionresult.hpp"
 #include "pipelineeventqueue.hpp"
 #include "precision.hpp"
@@ -60,7 +59,7 @@ protected:
 public:
     Node(const std::string& nodeName, std::optional<int32_t> demultiplyCount = std::nullopt, std::set<std::string> gatherFromNode = {});
 
-    virtual ~Node() = default;
+    virtual ~Node();
 
     const std::string& getName() const { return this->nodeName; }
 

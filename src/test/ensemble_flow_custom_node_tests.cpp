@@ -30,6 +30,8 @@
 #include "../exit_node.hpp"
 #include "../node_library.hpp"
 #include "../node_library_utils.hpp"
+#include "../nodestreamidguard.hpp"
+#include "../pipeline.hpp"
 #include "../pipelinedefinition.hpp"
 #include "../precision.hpp"
 #include "../stringutils.hpp"

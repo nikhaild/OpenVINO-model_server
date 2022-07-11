@@ -20,17 +20,19 @@
 
 #include <openvino/openvino.hpp>
 
-#include "custom_node_interface.h"  // NOLINT
 #include "nodesession.hpp"
 #include "pipelineeventqueue.hpp"
-#include "status.hpp"
 #include "tensormap.hpp"
+
+class CustomNodeTensor;
+class CustomNodeParam;
 
 namespace ovms {
 
 class ModelManager;
 class Node;
 class NodeLibrary;
+class Status;
 
 class CustomNodeSession : public NodeSession {
     TensorMap resultTensors;

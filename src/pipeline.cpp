@@ -23,6 +23,7 @@
 
 #include "logging.hpp"
 #include "node.hpp"
+#include "nodesession.hpp"
 #include "pipelineeventqueue.hpp"
 #include "profiler.hpp"
 #include "status.hpp"

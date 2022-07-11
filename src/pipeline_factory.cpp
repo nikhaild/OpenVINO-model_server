@@ -16,6 +16,7 @@
 #include "pipeline_factory.hpp"
 
 #include "logging.hpp"
+#include "nodeinfo.hpp"
 #include "pipeline.hpp"
 #include "pipelinedefinition.hpp"
 #include "prediction_service_utils.hpp"
