@@ -115,10 +115,10 @@ Click the test that needs to be run:
 
 2. Start OVMS docker container with downloaded model
 
-```bash
-docker run -d --name server-test -v ~/resnet50-binary:/models/resnet50-binary -p 9178:9178 \
-openvino/model_server:latest --model_name resnet-binary --model_path /models/resnet50-binary --port 9178
-```
+	```bash
+	docker run -d --name server-test -v ~/resnet50-binary:/models/resnet50-binary -p 9178:9178 \
+	openvino/model_server:latest --model_name resnet-binary --model_path /models/resnet50-binary --port 9178
+	```
 
 3. The grpc client connects to the OpenVINO Model Server service that is running on port 9178.
 

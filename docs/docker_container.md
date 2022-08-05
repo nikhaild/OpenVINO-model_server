@@ -87,12 +87,12 @@ To do so, use either of these commands:
 
 Running the inference operation on GPU requires the ovms process security context account to have correct permissions.
 It has to belong to the render group identified by the command:
-```
+```bash
 stat -c "group_name=%G group_id=%g" /dev/dri/render*
 ```
 The default account in the docker image is already preconfigured. In case you change the security context, use the following command
 to start the ovms container:
-```
+```bash
 docker run --rm -it  --device=/dev/dri --group-add=$(stat -c "%g" /dev/dri/render* | head -n 1) -u $(id -u):$(id -g) \
 -v /opt/model:/opt/model -p 9001:9001 openvino/model_server:latest-gpu \
 --model_path /opt/model --model_name my_model --port 9001 --target_device GPU
@@ -111,7 +111,7 @@ In order to use this feature in OpenVino™ Model Server, following steps are re
 Set target_device for the model in configuration json file to MULTI:DEVICE_1,DEVICE_2 (e.g. MULTI:MYRIAD,CPU, order of the devices defines their priority, so MYRIAD devices will be used first in this example)
 
 Below is exemplary config.json setting up Multi-Device Plugin for resnet model, using Intel® Movidius™ Neural Compute Stick and CPU devices:
-```
+```bash
 make docker_build BASE_OS=ubuntu
 ```
 
