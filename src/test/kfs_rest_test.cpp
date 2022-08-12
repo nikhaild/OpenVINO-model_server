@@ -17,12 +17,14 @@
 #include <string>
 
 #include <gtest/gtest.h>
+#include <rapidjson/document.h>
 
 #include "../config.hpp"
 #include "../grpcservermodule.hpp"
 #include "../http_rest_api_handler.hpp"
 #include "../servablemanagermodule.hpp"
 #include "../server.hpp"
+#include "../version.hpp"
 
 using ovms::Config;
 using ovms::HttpRestApiHandler;
@@ -196,4 +198,39 @@ TEST_F(HttpRestApiHandlerTest, dispatchReady) {
     handler->dispatchToProcessor(std::string(), &discard, comp);
 
     ASSERT_EQ(c, 1);
+}
+
+TEST_F(HttpRestApiHandlerTest, serverReady) {
+
+    ovms::HttpRequestComponents comp;
+    comp.type = ovms::KFS_GetServerReady;
+    std::string request;
+    std::string response;
+    ovms::Status status = handler->dispatchToProcessor(request, &response, comp);
+
+    ASSERT_EQ(status, server->isReady() ? ovms::StatusCode::OK : ovms::StatusCode::MODEL_NOT_LOADED);
+}
+
+TEST_F(HttpRestApiHandlerTest, serverLive) {
+
+    ovms::HttpRequestComponents comp;
+    comp.type = ovms::KFS_GetServerLive;
+    std::string request;
+    std::string response;
+    ovms::Status status = handler->dispatchToProcessor(request, &response, comp);
+
+    ASSERT_EQ(status, server->isLive() ? ovms::StatusCode::OK : ovms::StatusCode::INTERNAL_ERROR);
+}
+TEST_F(HttpRestApiHandlerTest, serverMetadata) {
+
+    ovms::HttpRequestComponents comp;
+    comp.type = ovms::KFS_GetServerMetadata;
+    std::string request;
+    std::string response;
+    ovms::Status status = handler->dispatchToProcessor(request, &response, comp);
+
+    rapidjson::Document doc;
+    doc.Parse(response.c_str());
+    ASSERT_EQ(std::string(doc["name"].GetString()), PROJECT_NAME);
+    ASSERT_EQ(std::string(doc["version"].GetString()), PROJECT_VERSION);
 }
