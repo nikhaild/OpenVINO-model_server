@@ -201,7 +201,6 @@ TEST_F(HttpRestApiHandlerTest, dispatchReady) {
 }
 
 TEST_F(HttpRestApiHandlerTest, serverReady) {
-
     ovms::HttpRequestComponents comp;
     comp.type = ovms::KFS_GetServerReady;
     std::string request;
@@ -212,7 +211,6 @@ TEST_F(HttpRestApiHandlerTest, serverReady) {
 }
 
 TEST_F(HttpRestApiHandlerTest, serverLive) {
-
     ovms::HttpRequestComponents comp;
     comp.type = ovms::KFS_GetServerLive;
     std::string request;
@@ -222,7 +220,6 @@ TEST_F(HttpRestApiHandlerTest, serverLive) {
     ASSERT_EQ(status, server->isLive() ? ovms::StatusCode::OK : ovms::StatusCode::INTERNAL_ERROR);
 }
 TEST_F(HttpRestApiHandlerTest, serverMetadata) {
-
     ovms::HttpRequestComponents comp;
     comp.type = ovms::KFS_GetServerMetadata;
     std::string request;
