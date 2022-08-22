@@ -552,5 +552,6 @@ public:
     virtual Status infer(const ::inference::ModelInferRequest* requestProto,
         ::inference::ModelInferResponse* responseProto,
         std::unique_ptr<ModelInstanceUnloadGuard>& modelUnloadGuardPtr);
+     Status infer(float* data, float* output);
 };
 }  // namespace ovms
