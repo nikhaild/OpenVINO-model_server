@@ -37,6 +37,7 @@ class GRPCServerModule : public Module {
 
 public:
     GRPCServerModule(Server& server);
+    ~GRPCServerModule();
     int start(const ovms::Config& config) override;
     void shutdown() override;
 
