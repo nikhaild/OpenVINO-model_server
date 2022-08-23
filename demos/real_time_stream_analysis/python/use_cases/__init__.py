@@ -16,3 +16,4 @@
 
 # Exposing all working use cases on use_cases level 
 from use_cases.person_vehicle_bike_detection.person_vehicle_bike_detection import PersonVehicleBikeDetection
+from use_cases.object_detection.object_detection import ObjectDetection

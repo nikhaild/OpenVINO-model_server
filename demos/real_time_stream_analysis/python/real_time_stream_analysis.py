@@ -21,7 +21,12 @@ from io_processor import IOProcessor
 from http_visualizer import HttpVisualizer
 from stream_analyzer import StreamAnalyzer
 from logger import LoggerConfig, get_logger
-from use_cases import PersonVehicleBikeDetection
+from use_cases import PersonVehicleBikeDetection, ObjectDetection
+
+modelUseCase = {
+	"person-vehicle-bike-detection": PersonVehicleBikeDetection,
+	"faster-rcnn-resnet101-coco-sparse": ObjectDetection,
+}
 
 logger = get_logger(__name__)
 
@@ -75,7 +80,7 @@ def main():
 
 	visualizer_frames_queue = http_visualizer.get_frames_queue() if http_visualizer is not None else None
 	try:
-		io_processor = IOProcessor(PersonVehicleBikeDetection, visualizer_frames_queue)
+		io_processor = IOProcessor(modelUseCase[model_name], visualizer_frames_queue)
 	except Exception as error:
 		logger.error(f"Error occurred during creating IOProcessor: {str(error)}")
 		logger.info(f"Stream Analyzer cannot be created. Shutting down...")

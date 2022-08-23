@@ -21,7 +21,7 @@ import numpy as np
 from logger import get_logger
 import multiprocessing
 import cv2
-
+#from pprint import pprint
 
 class InferenceExecutor(multiprocessing.Process):
 	
@@ -67,15 +67,20 @@ class InferenceExecutor(multiprocessing.Process):
 			return None
 		return result
 
-	def _predict(self, ovms_client, input_name, frame):
-		if self.binary_input:
-			_, jpeg_encoded_frame = cv2.imencode('.jpeg', frame)
-			input_data = jpeg_encoded_frame.tobytes()
-		else:
-			frame = np.expand_dims(frame, axis=0)
-			input_data = ovmsclient.make_tensor_proto(frame, dtype=NP_TO_TENSOR_MAP[np.float32].TensorDtype)
+	def _predict(self, ovms_client, inputs):
+		for (input_name, input_data) in inputs.items():
+			if input_name != 'image':
+				continue
+			frame = input_data 
+			if self.binary_input:
+				_, jpeg_encoded_frame = cv2.imencode('.jpeg', frame)
+				input_data = jpeg_encoded_frame.tobytes()
+			else:
+				frame = np.expand_dims(frame, axis=0)
+				input_data = ovmsclient.make_tensor_proto(frame, dtype=NP_TO_TENSOR_MAP[np.float32].TensorDtype)
+			inputs[input_name] = input_data
 
-		result = self._make_ovms_call(ovms_client.predict, {input_name: input_data}, self.model_name, self.model_version)
+		result = self._make_ovms_call(ovms_client.predict, inputs, self.model_name, self.model_version)
 		return result
 
 	def _get_model_metadata(self, ovms_client):
@@ -87,8 +92,12 @@ class InferenceExecutor(multiprocessing.Process):
 			self.exit_event.wait()
 			self.exit_ready.set()
 			return None
+
+		# Filter input param which will be synthesized.
+		discard_inputs = ['image_info:0']
+		model_metadata["inputs"] = {k: v for (k, v) in model_metadata["inputs"].items() if k not in discard_inputs}
 		
-		if len(model_metadata["inputs"]) > 1 or len(model_metadata["outputs"]) > 1:
+		if len(model_metadata["outputs"]) > 1:
 			self.logger.error("Unexpected number of model inputs or outputs. Expecting single input and single output.")
 			self.logger.info("Issuing abort signal...")
 			self.abort_event.set()
@@ -103,15 +112,22 @@ class InferenceExecutor(multiprocessing.Process):
 		if model_metadata is None:
 			return
 		
-		input_name = next(iter(model_metadata['inputs']))
 
 		while not self.exit_event.is_set():
 			try:
 				input = self.input_queue.get(timeout=1)
 			except queue.Empty:
 				continue
-
-			result = self._predict(ovms_client, input_name, input)
+			inputs = {'image': input}
+			if self.binary_input:
+				inputs['image_info:0'] = [[255.0, 255.0, 255.0]]
+			else:
+				#pprint(input[0][0])
+				input_data = np.expand_dims([input[0][0]], axis=0)
+				#pprint(input_data[0])
+				inputs['image_info:0'] = ovmsclient.make_tensor_proto(input_data[0], dtype=NP_TO_TENSOR_MAP[np.float32].TensorDtype)
+			#pprint(inputs)
+			result = self._predict(ovms_client, inputs)
 
 			if result is None:
 				self.logger.info("Issuing abort signal...")
