@@ -25,7 +25,7 @@ from use_cases import PersonVehicleBikeDetection, ObjectDetection
 
 modelUseCase = {
 	"person-vehicle-bike-detection": PersonVehicleBikeDetection,
-	"faster-rcnn-resnet101-coco-sparse": ObjectDetection,
+	"faster-rcnn-resnet101-coco-sparse-60-0001": ObjectDetection,
 }
 
 logger = get_logger(__name__)
