@@ -120,12 +120,12 @@ class InferenceExecutor(multiprocessing.Process):
 				continue
 			inputs = {'image': input}
 			if self.binary_input:
-				inputs['image_info:0'] = [[255.0, 255.0, 255.0]]
+				inputs['image_info'] = [[255.0, 255.0, 255.0]]
 			else:
 				#pprint(input[0][0])
 				input_data = np.expand_dims([input[0][0]], axis=0)
 				#pprint(input_data[0])
-				inputs['image_info:0'] = ovmsclient.make_tensor_proto(input_data[0], dtype=NP_TO_TENSOR_MAP[np.float32].TensorDtype)
+				inputs['image_info'] = ovmsclient.make_tensor_proto(input_data[0], dtype=NP_TO_TENSOR_MAP[np.float32].TensorDtype)
 			#pprint(inputs)
 			result = self._predict(ovms_client, inputs)
 
